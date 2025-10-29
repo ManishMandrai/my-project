@@ -5,7 +5,7 @@ import React, { useState, useRef } from "react";
 type Item = {
   id: string;
   label: string;
-  icon: JSX.Element;
+    icon: React.ReactNode;
 };
 
 const items: Item[] = [
