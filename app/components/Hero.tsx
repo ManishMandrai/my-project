@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -7,60 +8,94 @@ export default function Hero() {
       className="relative min-h-screen mt-20 w-full px-6 bg-black text-white flex items-center overflow-hidden"
       aria-label="Bhopal Film Festival hero"
     >
-      {/* ---- Cinema Light Beam ---- */}
+      {/* --- Visual layers: beam, vignette, grain --- */}
       <div
+        className="pointer-events-none absolute inset-0 z-0"
         aria-hidden
-        className="absolute -top-40 -left-40 w-[1200px] h-[800px] rotate-[-25deg] pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.02) 60%, transparent 100%)",
-          filter: "blur(40px)",
-          transformOrigin: "top left",
-          maskImage:
-            "radial-gradient(circle at 20% 50%, white 0%, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(circle at 20% 50%, white 0%, transparent 75%)",
-          opacity: 0.7,
-        }}
-      />
-
-      {/* ---- Subtle Dust Particles Glow (adds depth) ---- */}
-      <div
-        aria-hidden
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, transparent 70%)",
-          mixBlendMode: "screen",
-        }}
-      />
-
-      {/* ---- Top moving strip ---- */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-1/2 overflow-hidden z-20">
+      >
+        {/* soft cinematic light beam */}
         <div
-          className="whitespace-nowrap py-2 text-center"
+          className="absolute left-[-10%] top-0 h-full w-[60%] transform -skew-x-12 blur-3xl opacity-20"
           style={{
-            animation: "marquee-left 18s linear infinite",
+            background:
+              "linear-gradient(90deg, rgba(255,230,120,0.06) 0%, rgba(255,120,80,0.02) 40%, transparent 60%)",
           }}
-        >
-          <span className="mx-4 text-sm text-white/70 tracking-widest">
-            • Celebrating Stories • Screenings • Panels • Filmmakers • Madhya Pradesh •
-          </span>
-          <span className="mx-4 text-sm text-white/70 tracking-widest">
-            • Celebrating Cinema • New Voices • Cultural Exchange •
-          </span>
+        />
+
+        {/* vignette */}
+        <div
+          className="absolute inset-0 mix-blend-multiply"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%)",
+          }}
+        />
+
+        {/* subtle film grain overlay (animated tiny flicker) */}
+        <div
+          className="absolute inset-0 opacity-6 animate-grain"
+          style={{
+            backgroundImage:
+              "linear-gradient(transparent 50%, rgba(255,255,255,0.02) 50%), linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.02) 50%)",
+            backgroundSize: "3px 3px, 3px 3px",
+            mixBlendMode: "overlay",
+          }}
+        />
+      </div>
+
+      {/* --- Top marquee (smooth, duplicated content for seamless loop) --- */}
+      <div className="absolute top-8 left-0 w-full z-20">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="overflow-hidden">
+            <div
+              className="flex whitespace-nowrap will-change-transform items-center gap-8 py-2 text-sm text-white/70 tracking-widest"
+              style={{
+                animation: "marquee 20s linear infinite",
+              }}
+              aria-hidden
+            >
+              {[
+                "Celebrating Stories",
+                "Screenings & Panels",
+                "Filmmakers from MP",
+                "New Voices in Indian Cinema",
+                "Workshops & Cultural Exchange",
+                "Community Screenings",
+              ].map((t, i) => (
+                <span key={i} className="mx-4 flex items-center gap-3">
+                  <span className="inline-block text-[10px]">•</span>
+                  <span>{t}</span>
+                </span>
+              ))}
+
+              {/* duplicate for seamless loop */}
+              {[
+                "Celebrating Stories",
+                "Screenings & Panels",
+                "Filmmakers from MP",
+                "New Voices in Indian Cinema",
+                "Workshops & Cultural Exchange",
+                "Community Screenings",
+              ].map((t, i) => (
+                <span key={`dup-${i}`} className="mx-4 flex items-center gap-3">
+                  <span className="inline-block text-[10px]">•</span>
+                  <span>{t}</span>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ---- Main content ---- */}
+      {/* --- Main content container (centered, constrained) --- */}
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center py-4 lg:py-12">
-          {/* Left: big date */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center py-8 lg:py-16">
+          {/* Left: large date */}
           <div className="flex justify-start lg:justify-center items-start">
             <div className="text-left pl-2 lg:pl-0">
               <div
                 className="leading-none font-extrabold text-white"
-                style={{ fontSize: "clamp(48px, 9vw, 120px)" }}
+                style={{ fontSize: "clamp(48px, 9vw, 120px)", textShadow: '0 6px 30px rgba(0,0,0,0.7)' }}
               >
                 1
               </div>
@@ -70,7 +105,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Middle: title + tagline + CTAs */}
+          {/* Middle + Right: title + CTA */}
           <div className="lg:col-span-2 text-center lg:text-left px-2">
             <p className="text-sm uppercase tracking-wider mb-4 text-gray-300 font-semibold">
               Inaugural • One Day Showcase
@@ -78,50 +113,71 @@ export default function Hero() {
 
             <h1
               className="font-extrabold leading-tight text-white"
-              style={{
-                fontSize: "clamp(28px, 6vw, 64px)",
-                marginBottom: 12,
-              }}
+              style={{ fontSize: "clamp(32px, 6vw, 64px)", marginBottom: 12 }}
             >
               Bhopal Film Festival
             </h1>
 
             <p className="max-w-2xl text-gray-400 mb-8">
-              Where stories rise from the heart of Madhya Pradesh — a one-day
-              celebration of cinema, craft and community.
+              Stories from the heart of Madhya Pradesh — a cinematic day of screenings,
+              conversations and community that lift regional voices onto the big screen.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <a
-                href="/passes"
-                className="inline-block rounded-full px-6 py-3 font-semibold text-black"
-                style={{
-                  background: "linear-gradient(90deg,#FFD166,#FF7A5A)",
-                  boxShadow: "0 10px 30px rgba(255,120,60,0.12)",
-                }}
-              >
-                Get Tickets
-              </a>
+              <Link href="/passes" aria-label="Get Tickets" className="group">
+                <span
+                  className="inline-block rounded-md px-6 py-3 font-semibold text-black transform transition-all duration-200"
+                  style={{
+                    background: "#FFC414",
+                    boxShadow: "0 10px 30px rgba(255,196,20,0.16)",
+                  }}
+                >
+                  <span className="inline-block group-hover:-translate-y-0.5 transition-transform">
+                    Get Tickets
+                  </span>
+                </span>
+              </Link>
 
-              <a
+              <Link
                 href="/program"
-                className="inline-block rounded-full px-6 py-3 font-medium border border-white/10 text-white/90 hover:text-white transition-all"
+                className="inline-block rounded-md px-6 py-3 font-medium border border-white text-white hover:text-white transition-all"
               >
                 Explore Program
-              </a>
+              </Link>
             </div>
 
-            <div className="mt-6 text-sm text-gray-400">
-              Auditorium • Bhopal • Yet to Announce
-            </div>
+            <div className="mt-6 text-sm text-gray-400">Auditorium • Bhopal • Date TBA</div>
           </div>
         </div>
       </div>
 
+      {/* --- Component scoped styles --- */}
       <style>{`
-        @keyframes marquee-left {
+        @keyframes marquee {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
+        }
+
+        /* tiny animated grain flicker */
+        @keyframes grain {
+          0% { opacity: 0.05; }
+          50% { opacity: 0.09; }
+          100% { opacity: 0.05; }
+        }
+
+        .animate-grain {
+          animation: grain 4s ease-in-out infinite;
+        }
+
+        /* reduce motion for users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .will-change-transform { animation: none !important; }
+          .animate-grain { animation: none !important; }
+        }
+
+        /* small responsive tweak so marquee won't stutter on very small devices */
+        @media (max-width: 480px) {
+          .will-change-transform { animation-duration: 28s !important; }
         }
       `}</style>
     </section>
